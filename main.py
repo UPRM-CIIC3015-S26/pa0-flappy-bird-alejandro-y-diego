@@ -16,7 +16,7 @@ pygame.display.set_caption("Flappy Bird")
 WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
 BLACK = (0, 0, 0)
-PLAYER = (255, 200, 10)
+PLAYER = (255, 0, 10)
 
 # Font Size -->
 big_font = pygame.font.SysFont(None, 80)
@@ -63,8 +63,8 @@ running = True
 while running:
     # TODO 6: Changing the name!
     # D'oh! This is not yout name isn't follow the detailed instructions on the PDF to complete this task.
-    name = ("Diego Santiago"
-               for event in pygame.event.get():)
+    name = "Diego Santiago"
+    for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
         if event.type == pygame.KEYDOWN:
