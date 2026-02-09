@@ -46,7 +46,7 @@ pipe_width = 70
 # TODO 2.1: A Little gap Problem
 # You probably noticed when running the code that it's impossible the player to go through the gaps
 # play around with the pipe_gap variable so that its big enough for the player to pass through
-pipe_gap = 150
+pipe_gap = 180
 pipe_height = random.randint(100, 400)
 # TODO 2.2: The too fast problem
 # The pipes are moving way too fast! Play around with the pipe_speed variable until you find a good
@@ -63,7 +63,7 @@ running = True
 while running:
     # TODO 6: Changing the name!
     # D'oh! This is not yout name isn't follow the detailed instructions on the PDF to complete this task.
-    name = ("Alejandro"
+    name = ("Diego Santiago"
                for event in pygame.event.get():)
         if event.type == pygame.QUIT:
             running = False
