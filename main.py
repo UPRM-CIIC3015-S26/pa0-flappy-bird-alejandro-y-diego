@@ -7,6 +7,10 @@ in future PAs. In this PA, you will barely need to code—mostly just tweaking s
 fewer than five lines of new code. It is recommended that you read through the code and the comments explaining 
 some of the game mechanics.
 '''
+
+# Sounds -->
+jump_sound = pygame.mixer.Sound("swoosh.wav")
+
 # Setup the screen -->
 screen = pygame.display.set_mode((400, 600))
 pygame.display.set_caption("Flappy Bird")
@@ -72,8 +76,10 @@ while running:
                 if game_started == False:
                     game_started = True
                     bird_velocity = jump
+                    jump_sound.play()
                 elif game_over == False:
                     bird_velocity = jump
+                    jump_sound.play()
                 else:
                     # TODO 3: Spawning back the Player
                     # After the bird crashes with a pipe the when spawning back the player it doesn't appear.
