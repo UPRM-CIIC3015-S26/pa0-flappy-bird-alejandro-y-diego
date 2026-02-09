@@ -10,6 +10,12 @@ some of the game mechanics.
 
 # Sounds -->
 jump_sound = pygame.mixer.Sound("swoosh.wav")
+death_sound = pygame.mixer.Sound("eliminated.wav")
+new_highscore_sound = pygame.mixer.Sound("newhighscore.wav")
+
+# Background music -->
+pygame.mixer.music.load("retrobeat.mp3")
+pygame.mixer.music.set_volume(0.5)  # low volume (0.0 to 1.0)
 
 # Setup the screen -->
 screen = pygame.display.set_mode((400, 600))
@@ -25,6 +31,7 @@ PLAYER = (255, 0, 10)
 # Font Size -->
 big_font = pygame.font.SysFont(None, 80)
 small_font = pygame.font.SysFont(None, 30)
+score_font = pygame.font.SysFont(None, 60)
 
 # Text Coordinates -->
 title_x = 50
@@ -60,6 +67,8 @@ pipe_speed = 3
 score = 0
 game_over = False
 game_started = False
+high_score = 0
+died_this_round = False
 
 clock = pygame.time.Clock()
 
@@ -77,6 +86,7 @@ while running:
                     game_started = True
                     bird_velocity = jump
                     jump_sound.play()
+                    pygame.mixer.music.play(-1)
                 elif game_over == False:
                     bird_velocity = jump
                     jump_sound.play()
@@ -93,6 +103,11 @@ while running:
                     game_started = True
                     pipe_height = random.randint(100, 400)
 
+                    died_this_round = False
+
+                    pygame.mixer.music.stop()
+                    pygame.mixer.music.play(-1)
+
     if game_started == True and game_over == False:
         bird_velocity = bird_velocity + gravity
         bird_y = bird_y + bird_velocity
@@ -107,7 +122,14 @@ while running:
 
             score += 1
 
+            if score > high_score:
+                high_score = score
+                new_highscore_sound.play()
+
         if bird_y > 600 or bird_y < 0:
+            if not died_this_round:
+                death_sound.play()
+                died_this_round = True
             game_over = True
 
         bird_rect = pygame.Rect(bird_x, bird_y, 30, 30)
@@ -115,6 +137,9 @@ while running:
         bottom_pipe_rect = pygame.Rect(pipe_x, pipe_height + pipe_gap, pipe_width, 600)
 
         if bird_rect.colliderect(top_pipe_rect) or bird_rect.colliderect(bottom_pipe_rect):
+            if not died_this_round:
+                death_sound.play()
+                died_this_round = True
             game_over = True
 
     screen.fill(pygame.Color('grey12'))
@@ -124,9 +149,11 @@ while running:
     pygame.draw.rect(screen, PLAYER, (bird_x, bird_y, 30, 30)) # Drawing the bird (You don't need to touch this line!)
     pygame.draw.rect(screen, GREEN, (pipe_x, 0, pipe_width, pipe_height))
     pygame.draw.rect(screen, GREEN, (pipe_x, pipe_height + pipe_gap, pipe_width, 600))
-    score_text = small_font.render(str(score), True, WHITE)
-    screen.blit(score_text, (score_x, score_y))
+    score_text = score_font.render(f"{score}", True, WHITE)
+    high_text = small_font.render(f"Highest: {high_score}", True, WHITE)
 
+    screen.blit(score_text, (200, 20))
+    screen.blit(high_text, (10, 10))
     if game_started == False: # Start UI -->
         title_text = big_font.render("Flappy Bird", True, WHITE)
         instruction_text = small_font.render("Press space bar to flap!", True, WHITE)
